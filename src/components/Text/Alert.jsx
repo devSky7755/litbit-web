@@ -6,7 +6,7 @@ import {
   InformationCircleIcon,
 } from '@heroicons/react/outline'
 
-function Alert({ type, message, innerClass }) {
+export const Alert = ({ type, message, innerClass }) => {
   const icons = {
     info: InformationCircleIcon,
     success: CheckCircleIcon,
@@ -25,5 +25,3 @@ function Alert({ type, message, innerClass }) {
     </div>
   )
 }
-
-export default Alert

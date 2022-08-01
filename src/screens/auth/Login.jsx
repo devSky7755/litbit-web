@@ -3,15 +3,15 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-import Alert from '@/components/ui/Alert'
-import PageHeading from '@/components/ui/PageHeading'
+import { PageHeading, Alert } from '../../components'
+import { Strings } from '../../const'
 
 const schema = yup.object().shape({
   email: yup.string().label('Email').required().email(),
   password: yup.string().label('Password').required(),
 })
 
-function ScreenLogin() {
+export const ScreenLogin = () => {
   const [message, setMessage] = useState('')
   const {
     register,
@@ -22,17 +22,17 @@ function ScreenLogin() {
   })
 
   const onSubmit = (data) => {
-    setMessage('Feature not yet available')
+    setMessage(Strings.alert.featureNotAvailable)
     console.log(data)
   }
 
   return (
     <>
-      <PageHeading title="Sign in to your account" />
+      <PageHeading title={Strings.login.title} />
       <div className="flex flex-col justify-center py-12 bg-base sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-3xl font-extrabold text-center">
-            User Login
+            {Strings.login.subtitle}
           </h2>
         </div>
 
@@ -43,15 +43,14 @@ function ScreenLogin() {
 
               <div className="form-control">
                 <label className="label" htmlFor="email">
-                  <span className="label-text">Email address</span>
+                  <span className="label-text">{Strings.login.email}</span>
                 </label>
                 <input
                   type="email"
                   autoComplete="email"
                   {...register('email')}
-                  className={`input input-bordered ${
-                    errors.email && 'input-error'
-                  }`}
+                  className={`input input-bordered ${errors.email && 'input-error'
+                    }`}
                 />
                 {errors.email && (
                   <span className="mt-1 text-xs text-error">
@@ -62,15 +61,14 @@ function ScreenLogin() {
 
               <div className="form-control">
                 <label className="label" htmlFor="password">
-                  <span className="label-text">Password</span>
+                  <span className="label-text">{Strings.login.password}</span>
                 </label>
                 <input
                   type="password"
                   autoComplete="current-password"
                   {...register('password')}
-                  className={`input input-bordered ${
-                    errors.password && 'input-error'
-                  }`}
+                  className={`input input-bordered ${errors.password && 'input-error'
+                    }`}
                 />
                 {errors.password && (
                   <span className="mt-1 text-xs text-error">
@@ -89,7 +87,7 @@ function ScreenLogin() {
                     className="w-4 h-4 text-base border-gray-300 rounded focus:ring-base"
                   />
                   <label htmlFor="rememberMe" className="block ml-2 text-sm">
-                    Remember me
+                    {Strings.login.rememberMe}
                   </label>
                 </div>
 
@@ -98,14 +96,14 @@ function ScreenLogin() {
                     href="#"
                     className="font-medium hover:text-accent-content link"
                   >
-                    Forgot your password?
+                    {Strings.login.forgotPassword}
                   </a>
                 </div>
               </div>
 
               <div>
                 <button type="submit" className="btn btn-primary btn-block">
-                  Sign in
+                  {Strings.login.signIn}
                 </button>
               </div>
             </form>
@@ -123,5 +121,3 @@ function ScreenLogin() {
     </>
   )
 }
-
-export default ScreenLogin
