@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useAuthState } from "react-firebase-hooks/auth";
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-import { PageHeading, Alert } from '../../components'
-import { Strings } from '../../const'
+import { PageHeading, Alert } from '../../components';
+import { Strings } from '../../const';
+import { firebaseAuth } from "../../services";
+import { PATH_DASHBOARD } from '../../routes';
 
 const schema = yup.object().shape({
   email: yup.string().label('Email').required().email(),
@@ -13,6 +16,16 @@ const schema = yup.object().shape({
 
 export const ScreenLogin = () => {
   const [message, setMessage] = useState('')
+  const [user, loading, error] = useAuthState(firebaseAuth.auth);
+
+  useEffect(() => {
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    if (user) navigate(PATH_DASHBOARD);
+  }, [user, loading]);
+
   const {
     register,
     handleSubmit,
@@ -21,9 +34,14 @@ export const ScreenLogin = () => {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = (data) => {
-    setMessage(Strings.alert.featureNotAvailable)
-    console.log(data)
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
+    const { email, password } = data;
+    try {
+      await firebaseAuth.logInWithEmailAndPassword(email, password)
+    } catch (error) {
+      setMessage(Strings.firebase.errors?.[error.code] || Strings.api)
+    }
   }
 
   return (
