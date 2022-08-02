@@ -30,15 +30,38 @@ export const Strings = {
     join: {
         title: 'Join Litbit',
         subtitle: 'Create Teacher Account',
-        email: 'Email address',
-        password: 'Password',
-        passwordConfirm: 'Password Confirmation',
-        signUp: 'Sign up',
+        steps: {
+            register: 'Register',
+            personal_details: 'Personal Details',
+            students_pre_registering: 'Students',
+            completed: 'Done',
+        },
+        register: {
+            title: 'Registering Email Address',
+            email: 'Email address',
+            password: 'Password',
+            passwordConfirm: 'Password Confirmation',
+            signUp: 'Sign up',
+            error: {
+                passwordNotMatch: 'Passwords must match'
+            }
+        },
+        personal_details: {
+            title: 'Teacher Profile',
+            s_hub_id: 'SmartHub ID #',
+            first_name: 'First Name',
+            last_name: 'Last Name',
+            nces_district_number: 'NCES School District Number',
+            school_name: 'School Name',
+            grade_level: 'Grade Level',
+            choose_a_name_for_your_class: 'Choose a Name for your Class',
+            submit: 'Update'
+        },
+        students_pre_register: {
+            title: 'Students Management',
+        },
         haveAccount: 'Already have an account?',
         goToLogin: 'Log In',
-        error: {
-            passwordNotMatch: 'Passwords must match'
-        }
     },
     firebase: {
         errors: {

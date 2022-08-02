@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 
 import NotFound from '@/screens/NotFound'
 import {
@@ -12,18 +12,12 @@ import { PATH_HOME, PATH_JOIN, PATH_LOGIN } from "./paths";
 export const AppRouter = () => {
   return (
     <>
-      <Switch>
-        <Route exact path={PATH_HOME}>
-          <Home />
-        </Route>
-        <Route path={PATH_LOGIN}>
-          <ScreenLogin />
-        </Route>
-        <Route path={PATH_JOIN}>
-          <ScreenJoin />
-        </Route>
-        <Route component={NotFound} />
-      </Switch>
+      <Routes>
+        <Route path={PATH_HOME} element={<Home />} />
+        <Route path={PATH_LOGIN} element={<ScreenLogin />} />
+        <Route path={PATH_JOIN} element={<ScreenJoin />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
   )
 }

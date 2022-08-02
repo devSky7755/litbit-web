@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form'
 import { useAuthState } from "react-firebase-hooks/auth";
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -17,6 +18,7 @@ const schema = yup.object().shape({
 export const ScreenLogin = () => {
   const [message, setMessage] = useState('')
   const [user, loading, error] = useAuthState(firebaseAuth.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (loading) {
