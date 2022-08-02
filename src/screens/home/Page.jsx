@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import PageHeading from '@/components/ui/PageHeading'
+
+import { PageHeading } from '../../components'
+import { Strings } from '../../const'
 
 function PageCardLink({ title, url, icon }) {
   return (
@@ -18,13 +20,11 @@ function PageCardLink({ title, url, icon }) {
   )
 }
 
-function Home() {
+export const Home = () => {
 
   return (
     <>
-      <PageHeading title="Home" />
+      <PageHeading title={Strings.home.title} />
     </>
   )
 }
-
-export default Home

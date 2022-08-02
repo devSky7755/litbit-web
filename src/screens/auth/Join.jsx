@@ -4,18 +4,18 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-import PageHeading from '@/components/ui/PageHeading'
-import Alert from '@/components/ui/Alert'
+import { PageHeading, Alert } from '../../components'
+import { Strings } from '../../const'
 
 const schema = yup.object().shape({
   email: yup.string().label('Email').required().email(),
   password: yup.string().label('Password').required().min(8),
   passwordConfirm: yup
     .string()
-    .oneOf([yup.ref('password'), null], 'Passwords must match'),
+    .oneOf([yup.ref('password'), null], Strings.join.error.passwordNotMatch),
 })
 
-function ScreenJoin() {
+export const ScreenJoin = () => {
   const [message, setMessage] = useState('')
   const {
     register,
@@ -26,17 +26,17 @@ function ScreenJoin() {
   })
 
   const onSubmit = (data) => {
-    setMessage('Feature not yet available')
+    setMessage(Strings.alert.featureNotAvailable)
     console.log(data)
   }
 
   return (
     <>
-      <PageHeading title="Join Litbit" />
+      <PageHeading title={Strings.join.title} />
       <div className="flex flex-col justify-center py-12 bg-base sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-3xl font-extrabold text-center">
-            Create User Account
+            {Strings.join.subtitle}
           </h2>
         </div>
 
@@ -47,14 +47,13 @@ function ScreenJoin() {
 
               <div className="form-control">
                 <label className="label" htmlFor="email">
-                  <span className="label-text">Email address</span>
+                  <span className="label-text">{Strings.join.email}</span>
                 </label>
                 <input
                   type="email"
                   autoComplete="off"
-                  className={`input input-bordered ${
-                    errors.email && 'input-error'
-                  }`}
+                  className={`input input-bordered ${errors.email && 'input-error'
+                    }`}
                   {...register('email')}
                 />
                 {errors.email && (
@@ -66,13 +65,12 @@ function ScreenJoin() {
 
               <div className="form-control">
                 <label className="label" htmlFor="password">
-                  <span className="label-text">Password</span>
+                  <span className="label-text">{Strings.join.password}</span>
                 </label>
                 <input
                   type="password"
-                  className={`input input-bordered ${
-                    errors.password && 'input-error'
-                  }`}
+                  className={`input input-bordered ${errors.password && 'input-error'
+                    }`}
                   {...register('password')}
                 />
                 {errors.password && (
@@ -84,13 +82,12 @@ function ScreenJoin() {
 
               <div className="form-control">
                 <label className="label" htmlFor="passwordConfirm">
-                  <span className="label-text">Password Confirmation</span>
+                  <span className="label-text">{Strings.join.passwordConfirm}</span>
                 </label>
                 <input
                   type="password"
-                  className={`input input-bordered ${
-                    errors.passwordConfirm && 'input-error'
-                  }`}
+                  className={`input input-bordered ${errors.passwordConfirm && 'input-error'
+                    }`}
                   {...register('passwordConfirm')}
                 />
                 {errors.passwordConfirm && (
@@ -102,15 +99,15 @@ function ScreenJoin() {
 
               <div>
                 <button type="submit" className="btn btn-primary btn-block">
-                  Sign up
+                  {Strings.join.signUp}
                 </button>
               </div>
             </form>
 
             <div className="flex justify-end mt-4 text-sm">
-              Already have an account?{' '}
+              {Strings.join.haveAccount + ' '}
               <Link className="ml-2 link" to="/login">
-                Log In
+                {Strings.join.goToLogin}
               </Link>
             </div>
           </div>
@@ -119,5 +116,3 @@ function ScreenJoin() {
     </>
   )
 }
-
-export default ScreenJoin
