@@ -59,6 +59,17 @@ export const Strings = {
         },
         students_pre_register: {
             title: 'Students Management',
+            columns: {
+                first_name: 'First Name',
+                last_name: 'Last Name',
+                photo: 'Photo',
+                finger_print: 'Finger Print',
+                email: 'Email Address'
+            },
+            number_of_students: 'Number of Students Pre-registered',
+            add_student: 'Add Student',
+            complete_pre_registration: 'Complete Pre-registration',
+            cancel_and_discard_changes: 'Cancel and Discard All Changes'
         },
         haveAccount: 'Already have an account?',
         goToLogin: 'Log In',

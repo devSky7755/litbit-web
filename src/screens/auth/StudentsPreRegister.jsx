@@ -1,60 +1,113 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query';
 
+import { PencilIcon, XIcon } from '@heroicons/react/outline'
+
 import { firebaseStudent } from "../../services";
-import { Alert } from '../../components'
-import { Strings } from '../../const'
-import { PATH_LOGIN } from '../../routes'
+import { BasicTable, RemoteTable, BasicModal } from '../../components'
+import { Strings, StudentsMockData } from '../../const'
 
 
-const columns = [
+const columns = (editHandler, removeHandler) => [
+  {
+    name: Strings.join.students_pre_register.columns.last_name,
+    selector: row => row.last_name,
+    sortable: true
+  },
+  {
+    name: Strings.join.students_pre_register.columns.first_name,
+    selector: row => row.first_name,
+    sortable: true
+  },
+  {
+    name: Strings.join.students_pre_register.columns.photo,
+    selector: row => row.photo,
+  },
+  {
+    name: Strings.join.students_pre_register.columns.finger_print,
+    selector: row => row.finger_print,
+  },
+  {
+    name: Strings.join.students_pre_register.columns.email,
+    selector: row => row.email,
+    sortable: true
+  },
+  {
+    name: '',
+    cell: row => (
+      <div className="btn-group">
+        <button className="btn btn-outline btn-info btn-sm">
+          <PencilIcon className="w-4 h-4" aria-hidden="true" onClick={() => editHandler(row.id)} />
+        </button>
+        <button className="btn btn-outline btn-error btn-sm">
+          <XIcon className="w-4 h-4" aria-hidden="true" onClick={() => removeHandler(row.id)} />
+        </button>
+      </div>
+    ),
+  }
 ];
 
-const initialState = {
-  queryPageIndex: 0,
-  queryPageSize: 10,
-  totalCount: null,
-};
+const pageSize = 10;
 
-const PAGE_CHANGED = 'PAGE_CHANGED';
-const PAGE_SIZE_CHANGED = 'PAGE_SIZE_CHANGED';
-const TOTAL_COUNT_CHANGED = 'TOTAL_COUNT_CHANGED';
-
-const reducer = (state, { type, payload }) => {
-  switch (type) {
-    case PAGE_CHANGED:
-      return {
-        ...state,
-        queryPageIndex: payload,
-      };
-    case PAGE_SIZE_CHANGED:
-      return {
-        ...state,
-        queryPageSize: payload,
-      };
-    case TOTAL_COUNT_CHANGED:
-      return {
-        ...state,
-        totalCount: payload,
-      };
-    default:
-      throw new Error(`Unhandled action type: ${type}`);
-  }
-};
+const initialQueryPage = {
+  limit: pageSize,
+  op: "first",
+  benchmark: null
+}
 
 export const StudentsPreRegister = ({ user }) => {
-  const [{ queryPageIndex, queryPageSize, totalCount }, dispatch] =
-    React.useReducer(reducer, initialState);
+  const [queryPage, setQueryPage] = useState(initialQueryPage);
+  const [curPage, setCurPage] = useState(0);
+  const [isShowAddModal, setIsShowAddModal] = useState(false);
 
   const { isLoading, error, data, isSuccess } = useQuery(
-    ['students', queryPageIndex, queryPageSize],
-    () => firebaseStudent.getStudents(user.uid, { queryPageIndex, queryPageSize }),
+    ['students', queryPage],
+    () => {
+      return firebaseStudent.getStudents(user.uid, queryPage);
+    },
     {
       keepPreviousData: true,
       staleTime: Infinity,
     }
   );
+
+
+  const handlePageChange = page => {
+    const totalPageCount = Math.ceil(data.totalCount / pageSize);
+    if (page === 1) {
+      setQueryPage(initialQueryPage)
+    } else if (page === totalPageCount) {
+      setQueryPage({
+        limit: (data.totalCount % pageSize) || pageSize,
+        op: "last",
+        benchmark: null
+      })
+    } else {
+      if (page > curPage) {
+        setQueryPage({
+          limit: pageSize,
+          op: 'startAfter',
+          benchmark: data.docSnaps.docs[data.docSnaps.size - 1]
+        })
+      } else {
+        setQueryPage({
+          limit: pageSize,
+          op: 'endBefore',
+          benchmark: data.docSnaps.docs[0]
+        })
+      }
+    }
+    setCurPage(page);
+  };
+
+  const openAddModal = () => {
+    setIsShowAddModal(true);
+  }
+  const addHandler = () => {
+  }
+
+  const editHandler = (id) => { console.log(id) }
+  const removeHandler = (id) => { }
 
   return (
     <>
@@ -64,12 +117,38 @@ export const StudentsPreRegister = ({ user }) => {
         </h2>
       </div>
 
-      <div className="mt-8 md:mx-auto md:w-full md:max-w-lg">
-        <div className="px-4 py-8 shadow bg-base-200 md:rounded-lg md:px-10">
-          {isSuccess ? (
-            <>
-            </>
-          ) : null}
+      <div className="mt-8 sm:mx-auto w-full">
+        <div className="px-4 py-8 shadow bg-base-200 md:px-10">
+          <div className="flex flex-wrap">
+            <div className="flex-none mr-2 font-bold">
+              {`${Strings.join.students_pre_register.number_of_students} :  `}
+            </div>
+            <div className="flex-none">
+              {StudentsMockData.students.length}
+            </div>
+          </div>
+          <div className="flex justify-end flex-wrap">
+            <button className="btn btn-sm btn-outline btn-primary rounded-full m-2" onClick={openAddModal}>{Strings.join.students_pre_register.add_student}</button>
+            <button className="btn btn-sm btn-outline btn-success rounded-full m-2">{Strings.join.students_pre_register.complete_pre_registration}</button>
+            <button className="btn btn-sm btn-outline btn-warning rounded-full m-2">{Strings.join.students_pre_register.cancel_and_discard_changes}</button>
+          </div>
+          {/* <RemoteTable
+            columns={columns}
+            isLoading={isLoading}
+            error={error}
+            data={data}
+            isSuccess={isSuccess}
+            pageSize={pageSize}
+            handlePageChange={handlePageChange}
+          /> */}
+          <BasicTable
+            columns={columns(editHandler, removeHandler)}
+            isLoading={false}
+            data={StudentsMockData.students}
+            isSuccess={true}
+            pageSize={pageSize}
+          />
+          <BasicModal />
         </div>
       </div>
     </>

@@ -1,22 +1,35 @@
 import {
-    doc,
-    query,
-    getDocs,
-    collection,
-    where,
-    addDoc,
-    setDoc,
+    limit as qLimit,
+    limitToLast as qLimitToLast,
+    collection as fCollection,
+    where as fWhere,
+    orderBy as qOrderBy,
 } from "firebase/firestore/lite";
-import { firebaseEntry } from "./app";
+import { firebaseEntry, firebaseBasic } from ".";
 
 const db = firebaseEntry.db;
+const collection = fCollection(db, "students");
 
-const getStudents = async (uid, queryPage = {}) => {
+const getStudents = async (uid, queryPage = {
+    limit: 2,
+    op: "first", // op could be 'first' | 'startAfter' | 'endBefore' | 'last'
+    benchmark: null,
+}) => {
+    const where = fWhere("uid", "==", uid);
+    const orderBy = qOrderBy("email", "asc")
+    const limit = qLimit(queryPage?.limit);
+    const limitToLast = qLimitToLast(queryPage?.limit);
+
     try {
-        const q = query(collection(db, "students"), where("uid", "==", uid));
-        const docs = (await getDocs(q)).docs.map(docSnap => docSnap.data());
-        console.log(docs)
-        return docs;
+        return await firebaseBasic.gets(
+            queryPage?.op,
+            queryPage?.benchmark,
+            collection,
+            where,
+            orderBy,
+            limit,
+            limitToLast
+        )
     } catch (err) {
         throw err
     }

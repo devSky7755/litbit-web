@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import Footer from '@/layout/Footer'
 import Navbar from '@/layout/Navbar'
 import { AppRouter } from './routes'
+import "./App.css";
 
 function App() {
   const queryClient = new QueryClient()

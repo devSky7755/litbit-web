@@ -22,7 +22,7 @@ const steps = [{
 export const ScreenJoin = () => {
   const navigate = useNavigate();
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(2);
   const [message, setMessage] = useState('')
   const [onRegistering, setOnRegistering] = useState(false);
   const [user, loading, error] = useAuthState(firebaseAuth.auth);
@@ -33,7 +33,6 @@ export const ScreenJoin = () => {
     if (!user) setOnRegistering(true);
     // if (user && !onRegistering) navigate(PATH_DASHBOARD);
     if (user && !onRegistering) setActiveStep(2);
-    console.log(user);
   }, [user, loading]);
 
   const onRegisterSubmit = async (data, e) => {
