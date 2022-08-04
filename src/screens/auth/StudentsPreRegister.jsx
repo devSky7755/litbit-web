@@ -58,16 +58,19 @@ const initialQueryPage = {
 export const StudentsPreRegister = ({ user }) => {
   const [queryPage, setQueryPage] = useState(initialQueryPage);
   const [curPage, setCurPage] = useState(0);
+
+  const showAddModalId = 'show-add-modal';
   const [isShowAddModal, setIsShowAddModal] = useState(false);
 
   const { isLoading, error, data, isSuccess } = useQuery(
     ['students', queryPage],
     () => {
-      return firebaseStudent.getStudents(user.uid, queryPage);
+      return user ? firebaseStudent.getStudents(user.uid, queryPage) : {};
     },
     {
       keepPreviousData: true,
       staleTime: Infinity,
+      enabled: !!user?.uid
     }
   );
 
@@ -100,8 +103,8 @@ export const StudentsPreRegister = ({ user }) => {
     setCurPage(page);
   };
 
-  const openAddModal = () => {
-    setIsShowAddModal(true);
+  const clickedAddModalBtn = () => {
+    setIsShowAddModal(!isShowAddModal);
   }
   const addHandler = () => {
   }
@@ -128,12 +131,21 @@ export const StudentsPreRegister = ({ user }) => {
             </div>
           </div>
           <div className="flex justify-end flex-wrap">
-            <button className="btn btn-sm btn-outline btn-primary rounded-full m-2" onClick={openAddModal}>{Strings.join.students_pre_register.add_student}</button>
+            <BasicModal
+              visible={isShowAddModal}
+              modalId={showAddModalId}
+              onPress={clickedAddModalBtn}
+              btnLabel={Strings.join.students_pre_register.add_student}
+              btnClass="btn btn-sm btn-outline btn-primary rounded-full m-2"
+            >
+              <h3 className="font-bold text-lg">Congratulations random Internet user!</h3>
+              <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+            </BasicModal>
             <button className="btn btn-sm btn-outline btn-success rounded-full m-2">{Strings.join.students_pre_register.complete_pre_registration}</button>
             <button className="btn btn-sm btn-outline btn-warning rounded-full m-2">{Strings.join.students_pre_register.cancel_and_discard_changes}</button>
           </div>
           {/* <RemoteTable
-            columns={columns}
+            columns={columns(editHandler, removeHandler)}
             isLoading={isLoading}
             error={error}
             data={data}
@@ -148,7 +160,6 @@ export const StudentsPreRegister = ({ user }) => {
             isSuccess={true}
             pageSize={pageSize}
           />
-          <BasicModal />
         </div>
       </div>
     </>
