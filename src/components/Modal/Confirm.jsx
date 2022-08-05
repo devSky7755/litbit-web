@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-export const BasicModal = ({
-    modalId = "basic-modal",
+export const ConfirmModal = ({
+    modalId = "confirm-modal",
     hideControlBtn = false,
-    headerTitle,
+    text,
     btnLabel,
     btnClass,
     visible,
+    onConfirm,
     onPress,
     disableClose = false,
-    children
 }) => {
     return (
         <>
@@ -19,8 +19,15 @@ export const BasicModal = ({
             <label htmlFor={!disableClose && modalId} className="modal cursor-pointer">
                 <label className="modal-box relative" htmlFor="">
                     <label htmlFor={modalId} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-                    {headerTitle && (<h3 className="font-bold text-lg">{headerTitle}</h3>)}
-                    {children}
+                    <h3 className="font-bold text-lg mb-4">{text}</h3>
+                    <div className='grid grid-cols-2 gap-2'>
+                        <button className="btn btn-sm btn-error btn-block" onClick={onConfirm}>
+                            Yes
+                        </button>
+                        <button className="btn btn-sm btn-primary btn-block" onClick={onPress}>
+                            No
+                        </button>
+                    </div>
                 </label>
             </label>
         </>

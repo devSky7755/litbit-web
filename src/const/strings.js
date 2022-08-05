@@ -3,7 +3,7 @@ export const Strings = {
         request_failed: 'Server error - Unknown',
     },
     global: {
-        app: 'Litbit'
+        app: 'Litbit',
     },
     layout: {
         navbar: {
@@ -69,7 +69,22 @@ export const Strings = {
             number_of_students: 'Number of Students Pre-registered',
             add_student: 'Add Student',
             complete_pre_registration: 'Complete Pre-registration',
-            cancel_and_discard_changes: 'Cancel and Discard All Changes'
+            cancel_and_discard_changes: 'Cancel and Discard All Changes',
+            add_student_modal_header: 'Add New Student',
+            add_student_form: {
+                first_name: 'First Name',
+                last_name: 'Last Name',
+                email: 'Email Address',
+                submit: 'Confirm',
+                cancel: 'Cancel'
+            },
+            edit_student_modal_header: 'Edit Student',
+            remove_student_confirm_text: 'Are you sure',
+        },
+        complete: {
+            title: 'Teacher Account Creation Complete!',
+            otp_label: 'This is your assigned one-time-password (OTP):',
+            return_to_main_menu: 'Return to Main Menu',
         },
         haveAccount: 'Already have an account?',
         goToLogin: 'Log In',

@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query';
 
 import { PencilIcon, XIcon } from '@heroicons/react/outline'
 
 import { firebaseStudent } from "../../services";
-import { BasicTable, RemoteTable, BasicModal } from '../../components'
+import { BasicTable, RemoteTable, BasicModal, ConfirmModal } from '../../components'
 import { Strings, StudentsMockData } from '../../const'
+import { AddNewStudent } from '.';
 
 
-const columns = (editHandler, removeHandler) => [
+const columns = (clickedEditBtn, clickedRemoveBtn) => [
   {
     name: Strings.join.students_pre_register.columns.last_name,
     selector: row => row.last_name,
@@ -36,11 +37,11 @@ const columns = (editHandler, removeHandler) => [
     name: '',
     cell: row => (
       <div className="btn-group">
-        <button className="btn btn-outline btn-info btn-sm">
-          <PencilIcon className="w-4 h-4" aria-hidden="true" onClick={() => editHandler(row.id)} />
+        <button className="btn btn-outline btn-info btn-sm" onClick={() => clickedEditBtn(row.id)}>
+          <PencilIcon className="w-4 h-4" aria-hidden="true" />
         </button>
-        <button className="btn btn-outline btn-error btn-sm">
-          <XIcon className="w-4 h-4" aria-hidden="true" onClick={() => removeHandler(row.id)} />
+        <button className="btn btn-outline btn-error btn-sm" onClick={() => clickedRemoveBtn(row.id)}>
+          <XIcon className="w-4 h-4" aria-hidden="true" />
         </button>
       </div>
     ),
@@ -55,12 +56,19 @@ const initialQueryPage = {
   benchmark: null
 }
 
-export const StudentsPreRegister = ({ user }) => {
+export const StudentsPreRegister = ({ user, onComplete }) => {
   const [queryPage, setQueryPage] = useState(initialQueryPage);
   const [curPage, setCurPage] = useState(0);
 
   const showAddModalId = 'show-add-modal';
+  const showEditModalId = 'show-edit-modal';
+  const showRemoveConfirmModalId = 'show-remove-confirm-modal';
   const [isShowAddModal, setIsShowAddModal] = useState(false);
+  const [isShowEditModal, setIsShowEditModal] = useState(false);
+  const [editingStudent, setEditingStudent] = useState(null);
+  const [isShowRemoveConfirmModal, setIsShowRemoveConfirmModal] = useState(false);
+  const [removingStudent, setRemovingStudent] = useState(null);
+  const [message, setMessage] = useState('')
 
   const { isLoading, error, data, isSuccess } = useQuery(
     ['students', queryPage],
@@ -103,14 +111,61 @@ export const StudentsPreRegister = ({ user }) => {
     setCurPage(page);
   };
 
-  const clickedAddModalBtn = () => {
+  const clickedAddBtn = () => {
     setIsShowAddModal(!isShowAddModal);
   }
-  const addHandler = () => {
+  useEffect(() => {
+    if (!isShowAddModal) setMessage('');
+  }, [isShowAddModal])
+  const addHandler = (data, e) => {
+    e.preventDefault();
+    setMessage(Strings.alert.featureNotAvailable)
+    // TODO
+    // API Integration
+    console.log(data);
+  }
+  const completePreRegisterHandler = () => {
+    onComplete();
+  }
+  const cancelAndDiscardHandler = () => { }
+
+  const clickedEditBtn = (id) => {
+    if (!isShowEditModal) {
+      const student = StudentsMockData.students.find((s) => s.id === id)
+      setEditingStudent(student)
+    }
+    setIsShowEditModal(!isShowEditModal);
+  }
+  useEffect(() => {
+    if (!isShowEditModal) {
+      setEditingStudent(null);
+      setMessage('')
+    }
+  }, [isShowEditModal])
+  const editHandler = (data, e) => {
+    e.preventDefault();
+    setMessage(Strings.alert.featureNotAvailable)
+    // TODO
+    // API Integration
+    console.log(data);
   }
 
-  const editHandler = (id) => { console.log(id) }
-  const removeHandler = (id) => { }
+  const clickedRemoveBtn = (id) => {
+    if (!isShowRemoveConfirmModal) {
+      const student = StudentsMockData.students.find((s) => s.id === id)
+      setRemovingStudent(student)
+    }
+    setIsShowRemoveConfirmModal(!isShowRemoveConfirmModal);
+  }
+  useEffect(() => {
+    if (!isShowRemoveConfirmModal) {
+      setRemovingStudent(null);
+    }
+  }, [isShowRemoveConfirmModal])
+  const removeHandler = (e) => {
+    setIsShowRemoveConfirmModal(!isShowRemoveConfirmModal);
+    console.log(removingStudent)
+  }
 
   return (
     <>
@@ -132,20 +187,20 @@ export const StudentsPreRegister = ({ user }) => {
           </div>
           <div className="flex justify-end flex-wrap">
             <BasicModal
+              headerTitle={Strings.join.students_pre_register.add_student_modal_header}
               visible={isShowAddModal}
               modalId={showAddModalId}
-              onPress={clickedAddModalBtn}
+              onPress={clickedAddBtn}
               btnLabel={Strings.join.students_pre_register.add_student}
               btnClass="btn btn-sm btn-outline btn-primary rounded-full m-2"
             >
-              <h3 className="font-bold text-lg">Congratulations random Internet user!</h3>
-              <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+              <AddNewStudent message={message} onSubmit={addHandler} onCancel={clickedAddBtn} />
             </BasicModal>
-            <button className="btn btn-sm btn-outline btn-success rounded-full m-2">{Strings.join.students_pre_register.complete_pre_registration}</button>
-            <button className="btn btn-sm btn-outline btn-warning rounded-full m-2">{Strings.join.students_pre_register.cancel_and_discard_changes}</button>
+            <button className="btn btn-sm btn-outline btn-success rounded-full m-2" onClick={completePreRegisterHandler}>{Strings.join.students_pre_register.complete_pre_registration}</button>
+            <button className="btn btn-sm btn-outline btn-warning rounded-full m-2" onClick={cancelAndDiscardHandler}>{Strings.join.students_pre_register.cancel_and_discard_changes}</button>
           </div>
           {/* <RemoteTable
-            columns={columns(editHandler, removeHandler)}
+            columns={columns(clickedEditBtn, clickedRemoveBtn)}
             isLoading={isLoading}
             error={error}
             data={data}
@@ -154,12 +209,32 @@ export const StudentsPreRegister = ({ user }) => {
             handlePageChange={handlePageChange}
           /> */}
           <BasicTable
-            columns={columns(editHandler, removeHandler)}
+            columns={columns(clickedEditBtn, clickedRemoveBtn)}
             isLoading={false}
             data={StudentsMockData.students}
             isSuccess={true}
             pageSize={pageSize}
           />
+          <BasicModal
+            headerTitle={Strings.join.students_pre_register.edit_student_modal_header}
+            visible={isShowEditModal}
+            hideControlBtn={true}
+            modalId={showEditModalId}
+            onPress={clickedEditBtn}
+            btnClass="btn btn-sm btn-outline btn-primary rounded-full m-2"
+          >
+            <AddNewStudent student={editingStudent} message={message} onSubmit={editHandler} onCancel={clickedEditBtn} />
+          </BasicModal>
+          <ConfirmModal
+            text={Strings.join.students_pre_register.remove_student_confirm_text}
+            visible={isShowRemoveConfirmModal}
+            hideControlBtn={true}
+            modalId={showRemoveConfirmModalId}
+            onConfirm={removeHandler}
+            onPress={clickedRemoveBtn}
+            btnClass="btn btn-sm btn-outline btn-primary rounded-full m-2"
+          >
+          </ConfirmModal>
         </div>
       </div>
     </>

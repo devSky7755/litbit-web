@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { PageHeading, Stepper } from '../../components'
-import { RegisterEmail, PersonalDetails, StudentsPreRegister } from '.'
+import { RegisterEmail, PersonalDetails, StudentsPreRegister, JoinComplete } from '.'
 import { Strings } from '../../const'
 import { firebaseAuth, firebaseUser } from "../../services";
 import { PATH_DASHBOARD } from '../../routes';
@@ -22,7 +22,7 @@ const steps = [{
 export const ScreenJoin = () => {
   const navigate = useNavigate();
 
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(0);
   const [message, setMessage] = useState('')
   const [onRegistering, setOnRegistering] = useState(false);
   const [user, loading, error] = useAuthState(firebaseAuth.auth);
@@ -32,7 +32,7 @@ export const ScreenJoin = () => {
     if (loading) return;
     if (!user) setOnRegistering(true);
     // if (user && !onRegistering) navigate(PATH_DASHBOARD);
-    if (user && !onRegistering) setActiveStep(2);
+    if (user && !onRegistering) setActiveStep(1);
   }, [user, loading]);
 
   const onRegisterSubmit = async (data, e) => {
@@ -63,6 +63,10 @@ export const ScreenJoin = () => {
     }
   }
 
+  const onCompleteStudentPreRegistration = () => {
+    setActiveStep(3);
+  }
+
   return (
     <>
       <PageHeading title={Strings.join.subtitle} />
@@ -70,7 +74,8 @@ export const ScreenJoin = () => {
         <Stepper steps={steps} activeStep={activeStep} />
         {activeStep === 0 && <RegisterEmail onSubmit={onRegisterSubmit} message={message} />}
         {activeStep === 1 && <PersonalDetails onSubmit={onUpdatePersonalDetails} message={message} />}
-        {activeStep === 2 && <StudentsPreRegister user={userWithDetail || user} />}
+        {activeStep === 2 && <StudentsPreRegister user={userWithDetail || user} onComplete={onCompleteStudentPreRegistration} />}
+        {activeStep === 3 && <JoinComplete user={userWithDetail || user} />}
       </div>
     </>
   )
