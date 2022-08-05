@@ -7,14 +7,14 @@ import { Alert } from '../../components'
 import { Strings } from '../../const'
 
 const schema = yup.object().shape({
-  first_name: yup.string().label(Strings.join.students_pre_register.add_student_form.first_name).required(),
-  last_name: yup.string().label(Strings.join.students_pre_register.add_student_form.last_name).required(),
-  email: yup.string().label(Strings.join.students_pre_register.add_student_form.email).nullable(),
+  first_name: yup.string().label(Strings.edit_support_admin_list.add_admin_form.first_name).required(),
+  last_name: yup.string().label(Strings.edit_support_admin_list.add_admin_form.last_name).required(),
+  email: yup.string().label(Strings.edit_support_admin_list.add_admin_form.email).nullable(),
 })
 
-export const AddNewStudent = ({
+export const AddNewSupportAdmin = ({
   message,
-  student = null,
+  admin = null,
   onSubmit,
   onCancel
 }) => {
@@ -28,10 +28,10 @@ export const AddNewStudent = ({
   })
 
   useEffect(() => {
-    if (student) {
-      reset(student)
+    if (admin) {
+      reset(admin)
     }
-  }, [student])
+  }, [admin])
 
   return (
     <>
@@ -42,7 +42,7 @@ export const AddNewStudent = ({
             <div className='grid grid-cols-2 gap-2'>
               <div className="form-control">
                 <label className="label" htmlFor="first_name">
-                  <span className="label-text">{Strings.join.students_pre_register.add_student_form.first_name} *</span>
+                  <span className="label-text">{Strings.edit_support_admin_list.add_admin_form.first_name} *</span>
                 </label>
                 <input
                   type="text"
@@ -59,7 +59,7 @@ export const AddNewStudent = ({
               </div>
               <div className="form-control">
                 <label className="label" htmlFor="last_name">
-                  <span className="label-text">{Strings.join.students_pre_register.add_student_form.last_name} *</span>
+                  <span className="label-text">{Strings.edit_support_admin_list.add_admin_form.last_name} *</span>
                 </label>
                 <input
                   type="text"
@@ -78,7 +78,7 @@ export const AddNewStudent = ({
 
             <div className="form-control">
               <label className="label" htmlFor="email">
-                <span className="label-text">{Strings.join.students_pre_register.add_student_form.email}</span>
+                <span className="label-text">{Strings.edit_support_admin_list.add_admin_form.email}</span>
               </label>
               <input
                 type="email"
@@ -93,15 +93,22 @@ export const AddNewStudent = ({
                 </span>
               )}
             </div>
+
+            {!admin && (
+              <p className='mt-5 text-left'>
+                {Strings.edit_support_admin_list.add_admin_form.alert}
+              </p>
+            )}
+
             <div className='grid grid-cols-2 gap-2'>
               <button type="submit" className="btn btn-primary btn-block">
-                {Strings.join.students_pre_register.add_student_form.submit}
+                {Strings.edit_support_admin_list.add_admin_form.submit}
               </button>
               <button className="btn btn-error btn-block" onClick={(e) => {
                 e.preventDefault();
                 onCancel();
               }}>
-                {Strings.join.students_pre_register.add_student_form.cancel}
+                {Strings.edit_support_admin_list.add_admin_form.cancel}
               </button>
             </div>
           </form>

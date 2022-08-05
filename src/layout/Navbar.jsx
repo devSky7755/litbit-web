@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
-import { Link, NavLink } from 'react-router-dom'
+import { useNavigate, Link, NavLink } from 'react-router-dom'
 import { useAuthState } from "react-firebase-hooks/auth";
-import { LoginIcon, LogoutIcon } from '@heroicons/react/outline'
+import { LoginIcon, LogoutIcon, MenuIcon } from '@heroicons/react/outline'
 import { UserCircleIcon } from '@heroicons/react/solid'
 
 import './navbar.css'
@@ -28,14 +27,18 @@ function Navbar() {
         <Link exact="true" to={PATH_HOME} className="inline-block text-lg font-bold text-primary">
           <span className="text-base-content">{Strings.global.app}</span>
         </Link>
+
+        <label htmlFor="side-bar" className="ml-2 btn btn-sm btn-ghost drawer-button lg:hidden">
+          <MenuIcon className="w-5 h-5" aria-hidden="true" />
+        </label>
       </div>
-      <div className="navbar-center px-2 mx-2 hidden md:flex">
+      {/* <div className="navbar-center px-2 mx-2 hidden md:flex">
         <div className="flex items-stretch space-x-2">
           <NavLink to={PATH_HOME} className="btn btn-ghost btn-sm" exact="true">
             {Strings.layout.navbar.home}
           </NavLink>
         </div>
-      </div>
+      </div> */}
       <div className="navbar-end">
         <div className="flex space-x-4">
           {!user && (
@@ -70,7 +73,7 @@ function Navbar() {
             )}
         </div>
       </div>
-    </nav>
+    </nav >
   )
 }
 

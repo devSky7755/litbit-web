@@ -16,7 +16,7 @@ export const ConfirmModal = ({
             {!hideControlBtn && (<label htmlFor={modalId} className={btnClass}>{btnLabel}</label>)}
             <input type="checkbox" id={modalId} className="modal-toggle" checked={visible} onChange={onPress} />
 
-            <label htmlFor={!disableClose && modalId} className="modal cursor-pointer">
+            <label htmlFor={!disableClose && modalId} className="modal absolute cursor-pointer">
                 <label className="modal-box relative" htmlFor="">
                     <label htmlFor={modalId} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                     <h3 className="font-bold text-lg mb-4">{text}</h3>

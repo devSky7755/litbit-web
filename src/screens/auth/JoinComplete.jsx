@@ -18,7 +18,7 @@ export const JoinComplete = ({ user }) => {
                     {Strings.join.complete.title}
                 </h2>
             </div>
-            <div className="mt-8 card sm:mx-auto sm:w-full sm:max-w-lg w-96 bg-base-200 shadow-xl  text-center">
+            <div className="mt-8 card sm:mx-auto sm:w-full sm:max-w-lg w-96 bg-base-200 shadow-xl text-center">
                 <div className="card-body">
                     <h2 className="card-title">{Strings.join.complete.otp_label}</h2>
                     <p className="text-red-500">{otp}</p>

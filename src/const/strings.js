@@ -13,6 +13,18 @@ export const Strings = {
             join: 'Join',
             update_profile: 'Profile',
         },
+        menus: {
+            dashboard: 'Dashboard',
+            view_attendance: 'View Attendance',
+            view_check_in_results: 'View Check-In Results',
+            view_sensor_data: 'View Sensor Data',
+            edit_check_ins: 'Edit Check-Ins',
+            edit_support_admin_list: 'Edit Support Admin List',
+            edit_student_list: 'Edit Student List',
+            send_check_in_to_student_litbits: 'Send Check-In to Student LitBits',
+            view_otp: 'View OTP',
+            settings: 'Settings',
+        }
     },
     alert: {
         featureNotAvailable: 'Feature not yet available',
@@ -94,7 +106,7 @@ export const Strings = {
     profile: {
         title: 'Update Teacher Profile',
         steps: {
-            register: 'email',
+            register: 'Email',
             personal_details: 'Personal Details',
             students_pre_registering: 'Students',
             completed: 'Done',
@@ -245,7 +257,38 @@ export const Strings = {
             "auth/user-signed-out": "",
             "auth/weak-password": "The password must be 6 characters long or more.",
             "auth/web-storage-unsupported": "This browser is not supported or 3rd party cookies and data may be disabled."
-
         }
     },
+    dashboard: {
+        title: 'Congratulations!'
+    },
+    edit_support_admin_list: {
+        title: 'Support Admin List',
+        columns: {
+            first_name: 'First Name',
+            last_name: 'Last Name',
+            photo: 'Photo',
+            finger_print: 'Finger Print',
+            email: 'Email Address'
+        },
+        number_of_admins: 'Number of Support Admin Accounts',
+        add_admin: 'Add Support Admin',
+        return_to_main_menu: 'Return to Main Menu',
+        add_admin_modal_header: 'Create New Support Admin Account',
+        add_admin_form: {
+            first_name: 'First Name',
+            last_name: 'Last Name',
+            email: 'Email Address',
+            alert: 'Once confirmed, a support admin account will be created and a temporary web app password will be sent to the registered email address.',
+            submit: 'Confirm',
+            cancel: 'Cancel'
+        },
+        edit_admin_modal_header: 'Edit Admin',
+        remove_admin_confirm_text: 'Are you sure',
+        add_admin_complete: {
+            title: 'Teacher Account OTP!',
+            otp_label: 'This is your assigned one-time-password (OTP):',
+            return_to_main_menu: 'Return to Main Menu',
+        },
+    }
 }
