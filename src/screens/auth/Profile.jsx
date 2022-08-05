@@ -6,39 +6,37 @@ import { PageHeading, Stepper } from '../../components'
 import { RegisterEmail, PersonalDetails, StudentsPreRegister, JoinComplete } from '.'
 import { Strings } from '../../const'
 import { firebaseAuth, firebaseUser } from "../../services";
-import { PATH_PROFILE } from '../../routes';
+import { PATH_DASHBOARD, PATH_JOIN } from '../../routes';
 
 const steps = [{
   disableClick: true,
-  label: Strings.join.steps.register
+  label: Strings.profile.steps.register
 }, {
-  label: Strings.join.steps.personal_details
+  label: Strings.profile.steps.personal_details
 }, {
-  label: Strings.join.steps.students_pre_registering
+  label: Strings.profile.steps.students_pre_registering
 }, {
-  label: Strings.join.steps.completed
+  label: Strings.profile.steps.completed
 }];
 
-export const ScreenJoin = () => {
+export const ScreenProfile = () => {
   const navigate = useNavigate();
 
   const [activeStep, setActiveStep] = useState(0);
   const [message, setMessage] = useState('')
-  const [onRegistering, setOnRegistering] = useState(false);
   const [user, loading, error] = useAuthState(firebaseAuth.auth);
   const [userWithDetail, setUserWithDetail] = useState(null);
 
   useEffect(() => {
     if (loading) return;
-    if (!user) setOnRegistering(true);
-    if (user && !onRegistering) navigate(PATH_PROFILE);
+    if (!user) navigate(PATH_JOIN);
   }, [user, loading]);
 
-  const onRegisterSubmit = async (data, e) => {
+  const onUpdateEmail = async (data, e) => {
     e.preventDefault();
-    const { email, password } = data;
+    const { email } = data;
     try {
-      await firebaseAuth.registerWithEmailAndPassword(email, password)
+      await firebaseAuth.updateEmail(user, email)
       setActiveStep(1);
     } catch (error) {
       setMessage(Strings.firebase.errors?.[error.code] || Strings.api)
@@ -68,11 +66,11 @@ export const ScreenJoin = () => {
 
   return (
     <>
-      <PageHeading title={Strings.join.subtitle} />
+      <PageHeading title={Strings.profile.title} />
       <div className="flex flex-col justify-center py-12 bg-base sm:px-6 lg:px-8">
         <Stepper steps={steps} activeStep={activeStep} />
-        {activeStep === 0 && <RegisterEmail onSubmit={onRegisterSubmit} message={message} />}
-        {activeStep === 1 && <PersonalDetails onSubmit={onUpdatePersonalDetails} message={message} />}
+        {activeStep === 0 && <RegisterEmail user={user} onSubmit={onUpdateEmail} message={message} />}
+        {activeStep === 1 && <PersonalDetails user={user} onSubmit={onUpdatePersonalDetails} message={message} />}
         {activeStep === 2 && <StudentsPreRegister user={userWithDetail || user} onComplete={onCompleteStudentPreRegistration} />}
         {activeStep === 3 && <JoinComplete user={userWithDetail || user} />}
       </div>

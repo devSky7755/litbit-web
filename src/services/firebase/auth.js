@@ -6,6 +6,8 @@ import {
     createUserWithEmailAndPassword,
     sendPasswordResetEmail,
     signOut,
+    updateEmail as fUpdateEmail,
+    updatePassword as fUpdatePassword,
 } from "firebase/auth";
 import {
     query,
@@ -66,6 +68,22 @@ const registerWithEmailAndPassword = async (email, password) => {
     }
 };
 
+const updateEmail = async (user, email) => {
+    try {
+        await fUpdateEmail(user, email);
+    } catch (err) {
+        throw err
+    }
+}
+
+const updatePassword = async (user, password) => {
+    try {
+        await fUpdatePassword(user, password)
+    } catch (err) {
+        throw err
+    }
+}
+
 const sendPasswordReset = async (email) => {
     try {
         await sendPasswordResetEmail(auth, email);
@@ -75,8 +93,8 @@ const sendPasswordReset = async (email) => {
     }
 };
 
-const logout = () => {
-    signOut(auth);
+const logout = async () => {
+    await signOut(auth);
 };
 
 export const firebaseAuth = {
@@ -85,5 +103,7 @@ export const firebaseAuth = {
     logInWithEmailAndPassword,
     registerWithEmailAndPassword,
     sendPasswordReset,
+    updateEmail,
+    updatePassword,
     logout,
 };

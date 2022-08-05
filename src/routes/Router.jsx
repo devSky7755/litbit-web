@@ -6,8 +6,9 @@ import {
   Home,
   ScreenLogin,
   ScreenJoin,
+  ScreenProfile,
 } from '../screens'
-import { PATH_HOME, PATH_JOIN, PATH_LOGIN } from "./paths";
+import { PATH_HOME, PATH_JOIN, PATH_LOGIN, PATH_PROFILE } from "./paths";
 
 export const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ export const AppRouter = () => {
         <Route path={PATH_HOME} element={<Home />} />
         <Route path={PATH_LOGIN} element={<ScreenLogin />} />
         <Route path={PATH_JOIN} element={<ScreenJoin />} />
+        <Route path={PATH_PROFILE} element={<ScreenProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

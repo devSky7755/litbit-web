@@ -9,7 +9,9 @@ export const Strings = {
         navbar: {
             home: 'Home',
             login: 'Login',
+            logout: 'Logout',
             join: 'Join',
+            update_profile: 'Profile',
         },
     },
     alert: {
@@ -42,6 +44,67 @@ export const Strings = {
             password: 'Password',
             passwordConfirm: 'Password Confirmation',
             signUp: 'Sign up',
+            error: {
+                passwordNotMatch: 'Passwords must match'
+            }
+        },
+        personal_details: {
+            title: 'Teacher Profile',
+            s_hub_id: 'SmartHub ID #',
+            first_name: 'First Name',
+            last_name: 'Last Name',
+            nces_district_number: 'NCES School District Number',
+            school_name: 'School Name',
+            grade_level: 'Grade Level',
+            choose_a_name_for_your_class: 'Choose a Name for your Class',
+            submit: 'Update'
+        },
+        students_pre_register: {
+            title: 'Students Management',
+            columns: {
+                first_name: 'First Name',
+                last_name: 'Last Name',
+                photo: 'Photo',
+                finger_print: 'Finger Print',
+                email: 'Email Address'
+            },
+            number_of_students: 'Number of Students Pre-registered',
+            add_student: 'Add Student',
+            complete_pre_registration: 'Complete Pre-registration',
+            cancel_and_discard_changes: 'Cancel and Discard All Changes',
+            add_student_modal_header: 'Add New Student',
+            add_student_form: {
+                first_name: 'First Name',
+                last_name: 'Last Name',
+                email: 'Email Address',
+                submit: 'Confirm',
+                cancel: 'Cancel'
+            },
+            edit_student_modal_header: 'Edit Student',
+            remove_student_confirm_text: 'Are you sure',
+        },
+        complete: {
+            title: 'Teacher Account Creation Complete!',
+            otp_label: 'This is your assigned one-time-password (OTP):',
+            return_to_main_menu: 'Return to Main Menu',
+        },
+        haveAccount: 'Already have an account?',
+        goToLogin: 'Log In',
+    },
+    profile: {
+        title: 'Update Teacher Profile',
+        steps: {
+            register: 'email',
+            personal_details: 'Personal Details',
+            students_pre_registering: 'Students',
+            completed: 'Done',
+        },
+        register: {
+            title: 'Update Email Address',
+            email: 'Email address',
+            password: 'Password',
+            passwordConfirm: 'Password Confirmation',
+            signUp: 'Update',
             error: {
                 passwordNotMatch: 'Passwords must match'
             }

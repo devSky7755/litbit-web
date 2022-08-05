@@ -29,8 +29,8 @@ export const JoinComplete = ({ user }) => {
                         You will need your OTP to register your profile on your SmartHub. <br />
                         To view your OTP again, log in to the web app and click “View OTP”.
                     </p>
-                    <div class="card-actions justify-end">
-                        <button class="btn btn-outline btn-primary btn-sm" onClick={gotoDashboard}>{Strings.join.complete.return_to_main_menu}</button>
+                    <div className="card-actions justify-end">
+                        <button className="btn btn-outline btn-primary btn-sm" onClick={gotoDashboard}>{Strings.join.complete.return_to_main_menu}</button>
                     </div>
                 </div>
             </div>

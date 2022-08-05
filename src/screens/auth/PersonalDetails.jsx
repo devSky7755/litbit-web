@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+
+import { firebaseUser } from '../../services'
 
 import { Alert } from '../../components'
 import { Strings } from '../../const'
@@ -18,14 +20,22 @@ const schema = yup.object().shape({
   choose_a_name_for_your_class: yup.string().label(Strings.join.personal_details.choose_a_name_for_your_class).required(),
 })
 
-export const PersonalDetails = ({ message, onSubmit }) => {
+export const PersonalDetails = ({ user = null, message, onSubmit }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   })
+
+  useEffect(async () => {
+    if (user) {
+      const details = (await firebaseUser.getUserByUId(user?.uid))?.data();
+      reset(details)
+    }
+  }, [user])
 
   return (
     <>
